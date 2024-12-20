@@ -1,0 +1,112 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ poll.title }}{% endblock %}
+
+{% block body %}
+<div class="min-h-screen bg-base-200 py-8">
+    <div class="max-w-4xl mx-auto px-4">
+        {# Hero section avec titre et description #}
+        <div class="card bg-base-100 shadow-xl mb-8">
+            <div class="card-body text-center">
+                <h1 class="text-4xl font-bold mb-4">{{ poll.title }}</h1>
+                {% if poll.description %}
+                    <p class="text-xl text-base-content/80">{{ poll.description }}</p>
+                {% endif %}
+            </div>
+        </div>
+
+        {# Timer section #}
+        <div class="card bg-base-100 shadow-xl mb-8" x-data="timer('{{ poll.endAt|date('Y-m-d\\TH:i:s\\Z') }}')">
+            <div class="card-body">
+                <div class="grid place-items-center">
+                    <div class="stats shadow">
+                        <div class="stat text-center">
+                            <div class="stat-title">Time remaining</div>
+                            <div class="stat-value text-4xl font-mono">
+                                <span x-text="minutes">00</span>:<span x-text="seconds">00</span>
+                            </div>
+                            <div class="stat-desc" x-show="isExpired">Poll ended</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        {# Questions section #}
+        <div class="card bg-base-100 shadow-xl">
+            <div class="card-body">
+                <h2 class="card-title text-2xl mb-6">Make your choice</h2>
+                
+                {{ form_start(form, {'attr': {'class': 'space-y-4', 'x-data': '{ selected: null }'}}) }}
+                    <div class="space-y-4 px-8">
+                        {% for child in form.choice %}
+                            <label for="{{ child.vars.id }}" class="flex items-center w-full cursor-pointer">
+                                {{ form_widget(child, {
+                                    'attr': {
+                                        'class': 'radio radio-primary',
+                                        '@change': 'selected = $el.value'
+                                    }
+                                }) }}
+                                <div class="btn btn-lg btn-outline w-full hover:scale-[1.02] transition-transform duration-200 justify-start h-auto py-4 ml-4"
+                                     :class="selected === '{{ child.vars.value }}' ? 'btn-primary text-primary-content' : ''">
+                                    <div class="flex items-center">
+                                        <span class="text-left px-2">{{ child.vars.label }}</span>
+                                    </div>
+                                </div>
+                            </label>
+                        {% endfor %}
+                    </div>
+
+                    <div class="text-center mt-8">
+                        <button type="submit" 
+                                class="btn btn-primary btn-wide" 
+                                :disabled="!selected"
+                                :class="!selected ? 'btn-disabled' : ''">
+                            Submit Vote
+                        </button>
+                    </div>
+                {{ form_end(form) }}
+            </div>
+        </div>
+
+        {# Footer info #}
+        <div class="mt-8 text-center text-base-content/60">
+            <p>Visitor ID: {{ voterId }}</p>
+        </div>
+    </div>
+</div>
+
+<script>
+document.addEventListener('alpine:init', () => {
+    Alpine.data('timer', (endDate) => ({
+        minutes: '00',
+        seconds: '00',
+        isExpired: false,
+        
+        init() {
+            this.updateTimer()
+            setInterval(() => this.updateTimer(), 1000)
+        },
+
+        updateTimer() {
+            const end = new Date(endDate)
+            const now = new Date()
+            const diff = end - now
+
+            if (diff <= 0) {
+                this.isExpired = true
+                this.minutes = '00'
+                this.seconds = '00'
+                return
+            }
+
+            const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60))
+            const seconds = Math.floor((diff % (1000 * 60)) / 1000)
+
+            this.minutes = minutes.toString().padStart(2, '0')
+            this.seconds = seconds.toString().padStart(2, '0')
+        }
+    }))
+})
+</script>
+{% endblock %}

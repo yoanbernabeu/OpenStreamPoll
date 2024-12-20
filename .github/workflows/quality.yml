@@ -1,0 +1,48 @@
+name: Quality Assurance
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  static-code-analysis:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@master
+
+      - name: PHP CS Fixer
+        uses: docker://jakzal/phpqa:php8.3
+        with:
+          args: php-cs-fixer fix ./src --rules=@Symfony --verbose --dry-run
+
+      - name: PHPStan
+        uses: docker://jakzal/phpqa:php8.3
+        with:
+          args: phpstan analyse ./src --level=8
+
+      - name: Security Check
+        uses: docker://jakzal/phpqa:php8.3
+        with:
+          args: local-php-security-checker
+
+      - name: Lint Twig
+        uses: docker://jakzal/phpqa:php8.3
+        with:
+          args: bin/console lint:twig ./templates
+
+      - name: Lint YAML
+        uses: docker://jakzal/phpqa:php8.3
+        with:
+          args: bin/console lint:yaml ./config
+
+      - name: Lint Container
+        uses: docker://jakzal/phpqa:php8.3
+        with:
+          args: bin/console lint:container
+
+      - name: Run Tests
+        uses: docker://jakzal/phpqa:php8.3
+        with:
+          args: bin/phpunit --testdox

@@ -1,0 +1,57 @@
+<div x-data="{ 
+    notifications: [], 
+    getAlertClass(type) {
+        const classes = {
+            'success': 'alert-success text-success-content',
+            'error': 'alert-error text-error-content',
+            'warning': 'alert-warning text-warning-content',
+            'info': 'alert-info text-info-content'
+        };
+        return classes[type] || 'alert-info text-info-content';
+    },
+    add(message, type) {
+        const notification = {
+            id: Date.now(),
+            message,
+            type,
+            alertClass: this.getAlertClass(type),
+            show: true
+        };
+        this.notifications.push(notification)
+        setTimeout(() => this.remove(notification.id), 3000)
+    },
+    remove(id) {
+        this.notifications = this.notifications.filter(notification => notification.id !== id)
+    }
+}" 
+    @notify.window="add($event.detail.message, $event.detail.type)"
+    class="toast toast-end z-50"
+>
+    {% for type, messages in app.flashes %}
+        {% for message in messages %}
+            <div x-init="$nextTick(() => add('{{ message }}', '{{ type }}'))"></div>
+        {% endfor %}
+    {% endfor %}
+
+    <template x-for="notification in notifications" :key="notification.id">
+        <div 
+            x-show="true"
+            x-transition:enter="transition duration-300 ease-out"
+            x-transition:enter-start="opacity-0 translate-y-full"
+            x-transition:enter-end="opacity-100 translate-y-0"
+            x-transition:leave="transition duration-300 ease-in"
+            x-transition:leave-start="opacity-100 translate-y-0"
+            x-transition:leave-end="opacity-0 translate-y-full"
+            :class="`alert ${notification.alertClass} mt-2 min-w-[300px] shadow-lg flex items-center p-4`"
+        >
+            <div class="flex items-center gap-3">
+                <template x-if="notification.type === 'success'">
+                    <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                    </svg>
+                </template>
+                <span class="text-lg" x-text="notification.message"></span>
+            </div>
+        </div>
+    </template>
+</div>

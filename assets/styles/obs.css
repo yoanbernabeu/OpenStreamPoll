@@ -1,0 +1,117 @@
+body {
+    margin: 0;
+    padding: 0;
+    background: transparent !important;
+}
+
+.results-container {
+    background-color: rgba(0, 0, 0, 0.96);  /* Augmenté de 0.92 à 0.96 pour plus d'opacité */
+    padding: 30px;
+    border-radius: 12px;
+    color: white;
+    font-family: system-ui, sans-serif;
+    width: 100%;  /* Remplace la largeur fixe */
+    max-width: 1200px;  /* Largeur maximum */
+    border: 2px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+    margin: 0 auto;  /* Centre le conteneur */
+}
+
+/* Suppression de .choices-grid qui utilisait grid */
+
+.title {
+    font-size: clamp(24px, 4vw, 32px);  /* Responsive font-size */
+    font-weight: bold;
+    margin-bottom: 20px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.timer {
+    font-family: 'Courier New', monospace;
+    font-size: clamp(28px, 3.5vw, 36px);  /* Responsive font-size */
+    font-weight: bold;
+    color: #4f46e5;
+    text-shadow: 0 0 10px rgba(79, 70, 229, 0.3);
+    background: rgba(0, 0, 0, 0.2);
+    padding: 5px 15px;
+    border-radius: 6px;
+}
+
+.choice {
+    font-size: clamp(20px, 3vw, 28px);  /* Responsive font-size */
+    margin-bottom: 28px;  /* Augmenté pour plus d'espacement */
+}
+
+.badge {
+    background: #4f46e5;
+    color: white;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 0.875rem;
+}
+
+.progress {
+    width: 100%;
+    height: clamp(24px, 3vw, 36px);  /* Responsive height */
+    margin: 10px 0;
+    border-radius: 6px;
+}
+
+progress {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+progress::-webkit-progress-bar {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 6px;
+}
+
+progress::-webkit-progress-value {
+    background: linear-gradient(90deg, #4f46e5, #6366f1);
+    border-radius: 6px;
+    transition: width 0.3s ease;
+}
+
+progress::-moz-progress-bar {
+    background: linear-gradient(90deg, #4f46e5, #6366f1);
+    border-radius: 6px;
+}
+
+.percentage {
+    font-size: clamp(18px, 2.5vw, 26px);  /* Responsive font-size */
+    color: rgba(255, 255, 255, 0.9);
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+}
+
+.vote-count {
+    font-size: clamp(20px, 3vw, 28px);  /* Responsive font-size */
+    color: #4f46e5;
+    font-weight: bold;
+    background: rgba(79, 70, 229, 0.1);
+    padding: 5px 15px;  /* Padding augmenté pour mieux encadrer le nombre */
+    border-radius: 4px;
+    border: 1px solid rgba(79, 70, 229, 0.2);
+}
+
+.total-votes {
+    font-size: clamp(16px, 2vw, 20px);  /* Responsive font-size */
+    color: rgba(255, 255, 255, 0.7);
+    margin-top: 20px;
+}
+
+/* Media queries pour ajuster les espacements */
+@media (max-width: 768px) {
+    .results-container {
+        padding: 20px;
+    }
+
+    .choice {
+        margin-bottom: 20px;
+    }
+}
+
+@media (max-width: 480px) {
+    .results-container {
+        padding: 15px;
+    }
+}

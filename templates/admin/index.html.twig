@@ -1,0 +1,261 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Administration - OpenStreamPoll{% endblock %}
+
+{% block body %}
+    <div class="min-h-screen" x-data="{ 
+        currentView: 'grid',
+        init() {
+            // Forcer la vue 'grid' sur mobile, sinon utiliser la préférence stockée
+            this.currentView = window.innerWidth < 768 ? 'grid' : (localStorage.getItem('viewPreference') || 'grid');
+            
+            // Écouter les changements de taille d'écran
+            window.addEventListener('resize', () => {
+                if (window.innerWidth < 768) {
+                    this.currentView = 'grid';
+                }
+            });
+        },
+        setView(view) {
+            if (window.innerWidth >= 768) {
+                this.currentView = view;
+                localStorage.setItem('viewPreference', view);
+            }
+        }
+    }">
+        <div class="container mx-auto px-4 py-8">
+            <div class="card bg-base-200 shadow-xl">
+                <div class="card-body">
+                    <!-- Header avec contrôles -->
+                    <div class="flex flex-col lg:flex-row justify-between items-center gap-4 mb-8">
+                        <h1 class="card-title text-3xl font-bold">Polls Management</h1>
+                        
+                        <div class="flex flex-col sm:flex-row gap-4 items-center">
+                            <div class="join hidden md:flex">
+                                <button class="btn join-item" :class="{ 'btn-active': currentView === 'grid' }" @click="setView('grid')">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" />
+                                    </svg>
+                                </button>
+                                <button class="btn join-item" :class="{ 'btn-active': currentView === 'table' }" @click="setView('table')">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 10h16M4 14h16M4 18h16" />
+                                    </svg>
+                                </button>
+                            </div>
+
+                            <a href="{{ path('app_admin_create') }}" class="btn btn-primary w-full sm:w-auto hidden sm:flex">
+                                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+                                </svg>
+                                New Poll
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Vue grille (toujours visible sur mobile) -->
+                    <div x-show="currentView === 'grid'" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        {% for poll in polls %}
+                            <div class="card bg-base-300 hover:bg-base-200 transition-all">
+                                <div class="card-body">
+                                    <div class="flex justify-between items-start">
+                                        <h2 class="card-title">{{ poll.title }}</h2>
+                                        <div class="dropdown dropdown-end">
+                                            <button tabindex="0" class="btn btn-ghost btn-sm btn-circle">
+                                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z" />
+                                                </svg>
+                                            </button>
+                                            <ul tabindex="0" class="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52">
+                                                <li><a href="{{ path('app_admin_show', {'id': poll.id}) }}">View Details</a></li>
+                                                {% if poll.totalVotes == 0 %}
+                                                    <li><a href="{{ path('app_admin_edit', {'id': poll.id}) }}">Edit</a></li>
+                                                {% else %}
+                                                    <li><span class="text-opacity-50 cursor-not-allowed px-4 py-2">Cannot edit (has votes)</span></li>
+                                                {% endif %}
+                                                <li>
+                                                    <button 
+                                                        class="gap-2"
+                                                        onclick="navigator.clipboard.writeText('{{ url('app_poll_show', {'shortCode': poll.shortCode}) }}');
+                                                                const tooltip = this.closest('li');
+                                                                const originalText = this.innerHTML;
+                                                                this.innerHTML = `Copy vote URL <svg class='h-4 w-4 text-success' fill='none' viewBox='0 0 24 24' stroke='currentColor'><path stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M5 13l4 4L19 7'/></svg>`;
+                                                                setTimeout(() => this.innerHTML = originalText, 1000);"
+                                                    >
+                                                        Copy vote URL
+                                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3" />
+                                                        </svg>
+                                                    </button>
+                                                </li>
+                                                <li><a href="#" class="text-error" onclick="delete_modal_{{ poll.id }}.showModal()">Delete</a></li>
+                                            </ul>
+                                        </div>
+                                    </div>
+
+                                    <p class="text-sm opacity-75 line-clamp-2">{{ poll.description|default('No description') }}</p>
+                                    
+                                    <div class="flex flex-wrap gap-2 mt-4">
+                                        {% if "now"|date('U') >= poll.startAt|date('U') and "now"|date('U') <= poll.endAt|date('U') %}
+                                            <div class="badge badge-success">Open</div>
+                                        {% else %}
+                                            <div class="badge badge-error">Closed</div>
+                                        {% endif %}
+                                        {% if poll.totalVotes > 0 %}
+                                            <div class="badge badge-primary">{{ poll.totalVotes }} votes</div>
+                                        {% endif %}
+                                    </div>
+
+                                    <div class="flex items-center gap-2 mt-4" 
+                                         x-data="remainingTime('{{ poll.endAt|date('Y-m-d\\TH:i:s\\Z') }}')"
+                                         x-show="!isExpired">
+                                        <span class="opacity-75">Time left:</span>
+                                        <span x-text="timeText" class="badge badge-primary"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+
+                    <!-- Vue table (cachée sur mobile) -->
+                    <div x-show="currentView === 'table' && window.innerWidth >= 768" class="hidden md:block overflow-x-auto">
+                        <table class="table table-zebra w-full">
+                            <thead>
+                                <tr>
+                                    <th>Title</th>
+                                    <th class="hidden lg:table-cell">Description</th>
+                                    <th class="hidden md:table-cell">Time Left</th>
+                                    <th>Status</th>
+                                    <th>Votes</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for poll in polls %}
+                                    <tr class="hover">
+                                        <td>{{ poll.title }}</td>
+                                        <td class="hidden lg:table-cell max-w-xs truncate">{{ poll.description|default('No description') }}</td>
+                                        <td x-data="remainingTime('{{ poll.endAt|date('Y-m-d\\TH:i:s\\Z') }}')" 
+                                            class="py-4 w-32">
+                                            <span x-text="timeText" 
+                                                  x-show="!isExpired"
+                                                  class="badge badge-primary">
+                                            </span>
+                                            <span x-show="isExpired" 
+                                                  class="text-xs opacity-50">
+                                                Finished
+                                            </span>
+                                        </td>
+                                        <td>
+                                            {% if "now"|date('U') >= poll.startAt|date('U') and "now"|date('U') <= poll.endAt|date('U') %}
+                                                <div class="badge badge-success">Open</div>
+                                            {% else %}
+                                                <div class="badge badge-error">Closed</div>
+                                            {% endif %}
+                                        </td>
+                                        <td>
+                                            {% if poll.totalVotes > 0 %}
+                                                <div class="badge badge-primary">{{ poll.totalVotes }}</div>
+                                            {% else %}
+                                                <div class="text-xs opacity-50">No votes</div>
+                                            {% endif %}
+                                        </td>
+                                        <td>
+                                            <div class="join">
+                                                <a href="{{ path('app_admin_show', {'id': poll.id}) }}" class="btn btn-ghost btn-xs join-item">View</a>
+                                                {% if poll.totalVotes == 0 %}
+                                                    <a href="{{ path('app_admin_edit', {'id': poll.id}) }}" class="btn btn-ghost btn-xs join-item">Edit</a>
+                                                {% else %}
+                                                    <span class="btn btn-ghost btn-xs join-item opacity-50 cursor-not-allowed" title="Cannot edit - Poll has votes">Edit</span>
+                                                {% endif %}
+                                                <button 
+                                                    class="btn btn-ghost btn-xs join-item tooltip"
+                                                    data-tip="Click to copy vote URL"
+                                                    onclick="navigator.clipboard.writeText('{{ url('app_poll_show', {'shortCode': poll.shortCode}) }}');
+                                                            const icon = this.querySelector('.copy-icon');
+                                                            const checkIcon = this.querySelector('.check-icon');
+                                                            icon.classList.add('hidden');
+                                                            checkIcon.classList.remove('hidden');
+                                                            setTimeout(() => {
+                                                                icon.classList.remove('hidden');
+                                                                checkIcon.classList.add('hidden');
+                                                            }, 1000);"
+                                                >
+                                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 copy-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3" />
+                                                    </svg>
+                                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 check-icon hidden text-success" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                                                    </svg>
+                                                </button>
+                                                <button class="btn btn-ghost btn-xs join-item text-error" onclick="delete_modal_{{ poll.id }}.showModal()">Delete</button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Bouton flottant (visible uniquement sur mobile) -->
+        <div class="fixed bottom-6 right-6 sm:hidden">
+            <a href="{{ path('app_admin_create') }}" class="btn btn-primary btn-circle btn-lg shadow-lg">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+                </svg>
+            </a>
+        </div>
+    </div>
+
+    {% for poll in polls %}
+        <dialog id="delete_modal_{{ poll.id }}" class="modal">
+            <div class="modal-box">
+                <h3 class="font-bold text-lg">Delete Poll</h3>
+                <p class="py-4">Are you sure you want to delete "{{ poll.title }}"?</p>
+                <div class="modal-action">
+                    <form method="dialog">
+                        <button class="btn btn-ghost">Cancel</button>
+                    </form>
+                    <form method="post" action="{{ path('app_admin_delete', {'id': poll.id}) }}" class="inline">
+                        <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ poll.id) }}">
+                        <button class="btn btn-error">Delete</button>
+                    </form>
+                </div>
+            </div>
+        </dialog>
+    {% endfor %}
+
+    <script>
+    document.addEventListener('alpine:init', () => {
+        Alpine.data('remainingTime', (endDate) => ({
+            timeText: '',
+            isExpired: false,
+            
+            init() {
+                this.updateTimer()
+                setInterval(() => this.updateTimer(), 1000)
+            },
+
+            updateTimer() {
+                const end = new Date(endDate)
+                const now = new Date()
+                const diff = end - now
+
+                if (diff <= 0) {
+                    this.isExpired = true
+                    return
+                }
+
+                const totalSeconds = Math.floor(diff / 1000)
+                const minutes = Math.floor(totalSeconds / 60)
+                const seconds = totalSeconds % 60
+
+                this.timeText = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`
+            }
+        }))
+    })
+    </script>
+{% endblock %}

@@ -1,0 +1,17 @@
+services:
+  openstreampoll:
+    image: yoanbernabeu/openstreampoll:latest
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    environment:
+      - APP_ENV=prod
+      - SERVER_NAME=yourdomain.com # for prod with ssl/letsencrypt
+    volumes:
+      - database_data:/var/www/openstreampoll/var/sqlite
+
+volumes:
+###> doctrine/doctrine-bundle ###
+  database_data:
+###< doctrine/doctrine-bundle ###

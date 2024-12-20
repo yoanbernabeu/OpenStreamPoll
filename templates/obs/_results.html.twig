@@ -1,0 +1,41 @@
+{% if poll %}
+    <div class="results-container">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px;">
+            <div class="title">{{ poll.title }}</div>
+            <div x-data="timer('{{ poll.endAt|date('Y-m-d\\TH:i:s\\Z') }}')" class="timer">
+                <span x-text="minutes">00</span>:<span x-text="seconds">00</span>
+            </div>
+        </div>
+
+        <div>
+            {% for i in 1..5 %}
+                {% set question = attribute(poll, 'question' ~ i) %}
+                {% if question %}
+                    {% set voteCount = poll.getVotesForChoice(i) %}
+                    <div class="choice">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                            <span>{{ question }}</span>
+                            <span class="vote-count">{{ voteCount }}</span>
+                        </div>
+                        <progress 
+                            class="progress"
+                            value="{{ voteCount }}" 
+                            max="{{ poll.totalVotes > 0 ? poll.totalVotes : 1 }}"
+                        ></progress>
+                        <div style="text-align: right;" class="percentage">
+                            {% if poll.totalVotes > 0 %}
+                                {{ ((voteCount / poll.totalVotes) * 100)|round(1) }}%
+                            {% else %}
+                                0%
+                            {% endif %}
+                        </div>
+                    </div>
+                {% endif %}
+            {% endfor %}
+        </div>
+
+        <div class="total-votes" style="text-align: right; margin-top: 20px;">
+            Total votes: {{ poll.totalVotes }}
+        </div>
+    </div>
+{% endif %}

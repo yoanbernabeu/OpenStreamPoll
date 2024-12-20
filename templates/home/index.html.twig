@@ -1,0 +1,345 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}OpenStreamPoll - Open Source Live Polling Platform{% endblock %}
+
+{% block body %}
+    <!-- Hero Section -->
+    <div class="hero min-h-screen bg-[#0a0a0a] relative overflow-hidden">
+        <!-- Background Effects -->
+        <div class="absolute inset-0 z-0">
+            <!-- Dark Gradient Base -->
+            <div class="absolute inset-0 bg-gradient-to-br from-black via-base-300 to-black opacity-90"></div>
+            
+            <!-- Animated Gradient Effects -->
+            <div class="absolute inset-0">
+                <div class="absolute top-0 left-1/4 w-[500px] h-[500px] bg-purple-600/20 rounded-full blur-[100px] animate-pulse"></div>
+                <div class="absolute bottom-0 right-1/4 w-[500px] h-[500px] bg-blue-600/20 rounded-full blur-[100px] animate-pulse delay-1000"></div>
+                <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-fuchsia-600/10 rounded-full blur-[120px] animate-pulse delay-700"></div>
+            </div>
+        </div>
+
+        <!-- Hero Content -->
+        <div class="hero-content flex-col lg:flex-row-reverse max-w-7xl gap-4 lg:gap-8 px-4 relative z-10">
+            <!-- Screenshot with enhanced effects -->
+            <div class="w-full lg:w-1/2">
+                <div class="relative group">
+                    <!-- Multi-layer glow effect -->
+                    <div class="absolute -inset-1 bg-gradient-to-r from-primary via-purple-500 to-secondary opacity-75 blur-xl group-hover:opacity-100 transition duration-1000"></div>
+                    <div class="absolute -inset-2 bg-gradient-to-r from-primary via-purple-500 to-secondary opacity-50 blur-2xl group-hover:opacity-75 transition duration-1000 animate-pulse"></div>
+                    <!-- Screenshot container -->
+                    <div class="relative bg-base-100 rounded-lg p-1">
+                        <img 
+                            src="{{ asset('img/screen1.webp') }}" 
+                            alt="OpenStreamPoll Interface" 
+                            class="rounded-lg shadow-2xl relative z-10 transition duration-500 group-hover:scale-[1.02]"
+                            loading="lazy"
+                        />
+                        <!-- Subtle border glow instead of glass overlay -->
+                        <div class="absolute inset-0 rounded-lg ring-2 ring-primary/20 z-20"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Text Content -->
+            <div class="w-full lg:w-1/2 text-center lg:text-left space-y-4">
+                <!-- Badge humoristique -->
+                <div class="inline-flex items-center gap-2 bg-base-100/90 backdrop-blur-sm px-4 py-2 rounded-full shadow-lg mb-4 group cursor-help">
+                    <div class="w-8 h-8 bg-primary/20 rounded-full flex items-center justify-center group-hover:animate-spin">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
+                        </svg>
+                    </div>
+                    <span class="text-sm font-medium">Product of the Day <span class="opacity-60">in a Parallel World</span></span>
+                </div>
+
+                <h1 
+                    class="text-4xl lg:text-5xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-primary via-purple-500 to-secondary pb-2" 
+                    x-data="{ text: 'OpenStreamPoll' }" 
+                    x-init="$nextTick(() => {
+                        let delay = 100;
+                        text.split('').forEach((char, i) => {
+                            setTimeout(() => {
+                                $el.textContent = text.substring(0, i + 1);
+                            }, delay * i);
+                        });
+                    })"
+                >OpenStreamPoll</h1>
+                
+                <p class="py-4 lg:py-6 text-lg lg:text-xl opacity-80">Create instant polls for your live streams and get real-time feedback from your audience. Simple, fast, and effective.</p>
+                
+                <div class="flex flex-col sm:flex-row gap-3 justify-center lg:justify-start">
+                    <button onclick="document.getElementById('features').scrollIntoView({behavior: 'smooth'})" class="btn btn-primary btn-lg">
+                        Discover Features
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                            <path fill-rule="evenodd" d="M16.707 10.293a1 1 0 010 1.414l-6 6a1 1 0 01-1.414 0l-6-6a1 1 0 111.414-1.414L9 14.586V3a1 1 0 012 0v11.586l4.293-4.293a1 1 0 011.414 0z" clip-rule="evenodd" />
+                        </svg>
+                    </button>
+                    <a href="https://github.com/yoanbernabeu/OpenStreamPoll" class="btn btn-ghost btn-lg gap-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+                        </svg>
+                        View on GitHub
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Scroll Indicator -->
+        <div 
+            class="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce hidden lg:block cursor-pointer hover:opacity-75 transition-opacity"
+            onclick="document.getElementById('features').scrollIntoView({behavior: 'smooth'})"
+            role="button"
+            aria-label="Scroll to features section"
+        >
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 opacity-50" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M16.707 10.293a1 1 0 010 1.414l-6 6a1 1 0 01-1.414 0l-6-6a1 1 0 111.414-1.414L9 14.586V3a1 1 0 012 0v11.586l4.293-4.293a1 1 0 011.414 0z" clip-rule="evenodd" />
+            </svg>
+        </div>
+    </div>
+
+    <!-- Features Section -->
+    <div id="features" class="relative py-12 lg:py-20 px-4 bg-gradient-to-b from-base-300 to-base-200 overflow-hidden">
+        <div class="absolute inset-0 bg-gradient-to-br from-primary/5 to-secondary/5"></div>
+        <div class="max-w-6xl mx-auto relative z-10">
+            <h2 class="text-2xl lg:text-3xl font-bold text-center mb-8 lg:mb-12">Powerful Features for Streamers</h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-8">
+                <!-- Feature 1: Create Polls -->
+                <div class="card bg-base-100 hover:shadow-xl transition-all">
+                    <div class="card-body items-center text-center">
+                        <div class="w-16 h-16 mask mask-squircle bg-primary flex items-center justify-center mb-4">
+                            <svg class="w-8 h-8 text-primary-content" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+                            </svg>
+                        </div>
+                        <h3 class="card-title">Flexible Poll Creation</h3>
+                        <p class="opacity-75">Create polls with up to 5 options, perfect for engaging your audience with multiple choices.</p>
+                    </div>
+                </div>
+
+                <!-- Feature 2: Timer -->
+                <div class="card bg-base-100 hover:shadow-xl transition-all">
+                    <div class="card-body items-center text-center">
+                        <div class="w-16 h-16 mask mask-squircle bg-primary flex items-center justify-center mb-4">
+                            <svg class="w-8 h-8 text-primary-content" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg>
+                        </div>
+                        <h3 class="card-title">Custom Duration</h3>
+                        <p class="opacity-75">Set poll duration from 1 to 10 minutes to match your stream's pace.</p>
+                    </div>
+                </div>
+
+                <!-- Feature 3: Real-time Results -->
+                <div class="card bg-base-100 hover:shadow-xl transition-all">
+                    <div class="card-body items-center text-center">
+                        <div class="w-16 h-16 mask mask-squircle bg-primary flex items-center justify-center mb-4">
+                            <svg class="w-8 h-8 text-primary-content" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                            </svg>
+                        </div>
+                        <h3 class="card-title">Live Results</h3>
+                        <p class="opacity-75">Watch vote results update in real-time on your dashboard.</p>
+                    </div>
+                </div>
+
+                <!-- Feature 4: Unique URLs -->
+                <div class="card bg-base-100 hover:shadow-xl transition-all">
+                    <div class="card-body items-center text-center">
+                        <div class="w-16 h-16 mask mask-squircle bg-primary flex items-center justify-center mb-4">
+                            <svg class="w-8 h-8 text-primary-content" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" />
+                            </svg>
+                        </div>
+                        <h3 class="card-title">Easy Sharing</h3>
+                        <p class="opacity-75">Share unique poll URLs with your chat for instant audience participation.</p>
+                    </div>
+                </div>
+
+                <!-- Feature 5: Anti-Cheat -->
+                <div class="card bg-base-100 hover:shadow-xl transition-all">
+                    <div class="card-body items-center text-center">
+                        <div class="w-16 h-16 mask mask-squircle bg-primary flex items-center justify-center mb-4">
+                            <svg class="w-8 h-8 text-primary-content" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                            </svg>
+                        </div>
+                        <h3 class="card-title">Secure Voting</h3>
+                        <p class="opacity-75">IP and browser-based protection against duplicate votes.</p>
+                    </div>
+                </div>
+
+                <!-- Feature 6: OBS Integration -->
+                <div class="card bg-base-100 hover:shadow-xl transition-all">
+                    <div class="card-body items-center text-center">
+                        <div class="w-16 h-16 mask mask-squircle bg-primary flex items-center justify-center mb-4">
+                            <svg class="w-8 h-8 text-primary-content" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                            </svg>
+                        </div>
+                        <h3 class="card-title">Stream Integration</h3>
+                        <p class="opacity-75">Easy integration with OBS using dedicated overlay URLs.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Live Demo Section -->
+    <div class="relative py-12 lg:py-20 px-4 bg-gradient-to-b from-base-200 via-base-100 to-neutral overflow-hidden">
+        <!-- Gradient Orbs -->
+        <div class="absolute inset-0">
+            <div class="absolute top-0 left-1/4 w-[300px] h-[300px] bg-primary/10 rounded-full blur-3xl"></div>
+            <div class="absolute bottom-0 right-1/4 w-[300px] h-[300px] bg-secondary/10 rounded-full blur-3xl"></div>
+        </div>
+        
+        <div class="max-w-3xl mx-auto relative z-10">
+            <h2 class="text-2xl lg:text-3xl font-bold text-center mb-8 bg-clip-text text-transparent bg-gradient-to-r from-primary to-secondary">Live Demo</h2>
+            
+            <div class="card bg-base-200 shadow-xl" x-data="{
+                votes: {
+                    'JavaScript': 0,
+                    'Python': 0,
+                    'PHP': 0
+                },
+                totalVotes: 0,
+                timer: 30,
+                interval: null,
+                init() {
+                    this.startSimulation();
+                },
+                startSimulation() {
+                    this.interval = setInterval(() => {
+                        if (this.timer > 0) {
+                            this.timer--;
+                            // Simule des votes aléatoires
+                            const languages = ['JavaScript', 'Python', 'PHP'];
+                            const randomLang = languages[Math.floor(Math.random() * languages.length)];
+                            this.votes[randomLang]++;
+                            this.totalVotes++;
+                        } else {
+                            clearInterval(this.interval);
+                        }
+                    }, 500);
+                },
+                getPercentage(votes) {
+                    return this.totalVotes > 0 ? (votes / this.totalVotes * 100).toFixed(1) : 0;
+                }
+            }">
+                <div class="card-body">
+                    <h3 class="card-title mb-4">What's your favorite programming language?</h3>
+                    
+                    <div class="space-y-4">
+                        <template x-for="(votes, lang) in votes" :key="lang">
+                            <div class="mb-4">
+                                <div class="flex items-center gap-2 mb-2">
+                                    <span x-text="lang"></span>
+                                    <span class="badge badge-primary" x-text="`${votes} votes`"></span>
+                                </div>
+                                <progress 
+                                    class="progress progress-primary w-full" 
+                                    :value="votes"
+                                    :max="totalVotes || 1"
+                                ></progress>
+                                <div class="text-xs opacity-75 text-right" x-text="`${getPercentage(votes)}%`"></div>
+                            </div>
+                        </template>
+                    </div>
+
+                    <div class="mt-4 flex justify-between items-center">
+                        <div class="text-sm opacity-75" x-text="`Total votes: ${totalVotes}`"></div>
+                        <div class="badge badge-secondary" x-text="`${timer}s remaining`"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Open Source Section -->
+    <div class="relative py-12 lg:py-20 px-4 bg-gradient-to-b from-neutral to-base-300 overflow-hidden">
+        <!-- Background Patterns -->
+        <div class="absolute inset-0">
+            <div class="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-secondary/5"></div>
+            <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-gradient-to-r from-primary/10 to-secondary/10 rounded-full blur-3xl opacity-30"></div>
+        </div>
+
+        <div class="max-w-6xl mx-auto relative z-10">
+            <div class="text-center mb-8 lg:mb-12">
+                <h2 class="text-2xl lg:text-3xl font-bold mb-3 bg-clip-text text-transparent bg-gradient-to-r from-primary to-secondary">100% Open Source</h2>
+                <p class="text-lg lg:text-xl opacity-80">Deploy your own instance in minutes</p>
+            </div>
+            
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-8 items-center">
+                <div class="card bg-base-200">
+                    <div class="card-body">
+                        <h3 class="card-title mb-4">Zero-Config Deployment</h3>
+                        <ul class="space-y-4 mb-6">
+                            <li class="flex items-start gap-2">
+                                <svg class="w-6 h-6 text-success flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                                </svg>
+                                <span>Just need a VPS with SSH access</span>
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <svg class="w-6 h-6 text-success flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                                </svg>
+                                <span>Docker-ready configuration included</span>
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <svg class="w-6 h-6 text-success flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                                </svg>
+                                <span>Point your domain and you're ready!</span>
+                            </li>
+                        </ul>
+                        <div class="flex flex-wrap gap-4">
+                            <a href="https://github.com/yoanbernabeu/OpenStreamPoll" class="btn btn-primary gap-2">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
+                                    <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+                                </svg>
+                                Clone on GitHub
+                            </a>
+                            <a href="https://github.com/yoanbernabeu/OpenStreamPoll?tab=readme-ov-file#production-deployment" class="btn btn-ghost gap-2">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+                                </svg>
+                                Deployment Guide
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="card bg-base-200">
+                    <div class="card-body font-mono text-sm">
+                        <div class="mockup-code">
+                            <pre data-prefix="$"><code>git clone https://github.com/yoanbernabeu/OpenStreamPoll.git</code></pre>
+                            <pre data-prefix="$"><code>cd OpenStreamPoll</code></pre>
+                            <pre data-prefix="$"><code>make deploy</code></pre>
+                            <pre data-prefix=""><code class="text-success">🚀 Your instance is ready!</code></pre>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- CTA Section -->
+    <div class="relative py-12 lg:py-20 px-4 bg-gradient-to-b from-base-300 to-base-200 overflow-hidden">
+        <!-- Subtle Gradient Animation -->
+        <div class="absolute inset-0">
+            <div class="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-secondary/5"></div>
+        </div>
+
+        <div class="max-w-3xl mx-auto relative z-10 text-center">
+            <h2 class="text-2xl lg:text-3xl font-bold mb-4 lg:mb-6">Ready to Create Your First Poll?</h2>
+            <p class="mb-6 lg:mb-8 opacity-80 text-lg">It's free, open source, and takes just minutes to set up your own instance.</p>
+            <div class="flex flex-col sm:flex-row gap-3 justify-center">
+                <a href="https://github.com/yoanbernabeu/OpenStreamPoll" class="btn btn-primary">Get Started on GitHub</a>
+                <button onclick="document.getElementById('features').scrollIntoView({behavior: 'smooth'})" class="btn btn-ghost">
+                    View Features
+                </button>
+            </div>
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,174 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{% if app.request.attributes.get('_route') == 'app_admin_edit' %}Edit Poll{% else %}New Poll{% endif %} - OpenStreamPoll{% endblock %}
+
+{% block body %}
+    {% set question1_id = form.question1.vars.id %}
+    {% set question2_id = form.question2.vars.id %}
+
+    <div class="min-h-screen">
+        <div class="container mx-auto px-4 py-8">
+            <div class="card bg-base-200 shadow-xl">
+                <div class="card-body">
+                    <h2 class="card-title text-2xl mb-8">
+                        {% if app.request.attributes.get('_route') == 'app_admin_edit' %}
+                            Edit Poll
+                        {% else %}
+                            New Poll
+                        {% endif %}
+                    </h2>
+
+                    {{ form_start(form, {'attr': {'class': 'space-y-6', 'x-data': '{
+                        canSubmit: false,
+                        init() {
+                            this.$nextTick(() => {
+                                this.checkSubmission();
+                            });
+                        },
+                        checkSubmission() {
+                            const q1 = document.getElementById("' ~ question1_id ~ '");
+                            const q2 = document.getElementById("' ~ question2_id ~ '");
+                            
+                            if (q1 && q2) {
+                                const q1Value = q1.value.trim();
+                                const q2Value = q2.value.trim();
+                                this.canSubmit = q1Value.length > 0 && q2Value.length > 0;
+                            } else {
+                                this.canSubmit = false;
+                            }
+                        },
+                        clearOption(questionId) {
+                            const element = document.getElementById(questionId);
+                            if (element) {
+                                element.value = "";
+                                element.dispatchEvent(new Event("input", { bubbles: true }));
+                                this.checkSubmission();
+                            }
+                        }
+                    }'}}) }}
+                        <div class="grid grid-cols-1 gap-8">
+                            {# Section question principale et description #}
+                            <div class="card bg-base-300">
+                                <div class="card-body">
+                                    <div class="form-control">
+                                        {{ form_label(form.title, 'Question', {
+                                            'label_attr': {
+                                                'class': 'label'
+                                            }
+                                        }) }}
+                                        {{ form_widget(form.title, {
+                                            'attr': {
+                                                'class': 'textarea textarea-bordered w-full',
+                                                'placeholder': 'Enter your question here...',
+                                                'rows': '2'
+                                            }
+                                        }) }}
+                                        {{ form_errors(form.title) }}
+                                    </div>
+
+                                    <div class="form-control">
+                                        {{ form_label(form.description, 'Additional Information (optional)', {
+                                            'label_attr': {
+                                                'class': 'label'
+                                            }
+                                        }) }}
+                                        {{ form_widget(form.description, {
+                                            'attr': {
+                                                'class': 'textarea textarea-bordered w-full',
+                                                'rows': '3',
+                                                'placeholder': 'Add any additional context or information...'
+                                            }
+                                        }) }}
+                                        {{ form_errors(form.description) }}
+                                    </div>
+                                </div>
+                            </div>
+
+                            {# Section réponses possibles #}
+                            <div class="card bg-base-300">
+                                <div class="card-body">
+                                    <h3 class="card-title flex justify-between items-center">
+                                        <span>Answer Options</span>
+                                        <span class="text-sm font-normal opacity-75">(Options 1 and 2 required)</span>
+                                    </h3>
+                                    
+                                    {% for i in 1..5 %}
+                                        <div class="form-control">
+                                            <div class="relative flex items-center gap-2">
+                                                {{ form_widget(attribute(form, 'question' ~ i), {
+                                                    'attr': {
+                                                        'class': 'input input-bordered w-full',
+                                                        'placeholder': 'Option ' ~ i ~ (i <= 2 ? ' (required)' : ''),
+                                                        '@input.debounce.250ms': 'checkSubmission()',
+                                                        'required': i <= 2 ? 'required' : false,
+                                                        'id': attribute(form, 'question' ~ i).vars.id
+                                                    }
+                                                }) }}
+                                                {% if i > 2 %}
+                                                    <button type="button" 
+                                                            class="btn btn-ghost btn-sm text-error"
+                                                            @click="clearOption('{{ attribute(form, 'question' ~ i).vars.id }}')">
+                                                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                                                        </svg>
+                                                    </button>
+                                                {% endif %}
+                                                {{ form_errors(attribute(form, 'question' ~ i)) }}
+                                            </div>
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+
+                            {# Section paramètres #}
+                            <div class="card bg-base-300">
+                                <div class="card-body">
+                                    <h3 class="card-title">Settings</h3>
+                                    {{ form_widget(form.startAt, {'attr': {'class': 'hidden'}}) }}
+                                    {{ form_widget(form.endAt, {'attr': {'class': 'hidden'}}) }}
+
+                                    <div class="form-control">
+                                        {{ form_label(form.duration, 'Poll Duration', {
+                                            'label_attr': {
+                                                'class': 'label'
+                                            }
+                                        }) }}
+                                        <div class="relative">
+                                            {{ form_widget(form.duration, {
+                                                'attr': {
+                                                    'class': 'input input-bordered w-full pl-3 pr-10 py-2'
+                                                }
+                                            }) }}
+                                            <div class="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
+                                                <svg class="h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                                                    <path fill-rule="evenodd" d="M10 3a1 1 0 00-1 1v4L5.707 9.707a1 1 0 00.707 1.707H10v4a1 1 0 102 0v-4h3.586a1 1 0 00.707-1.707L13 8V4a1 1 0 00-1-1h-2z" clip-rule="evenodd" />
+                                                </svg>
+                                            </div>
+                                        </div>
+                                        <p class="mt-2 text-sm text-gray-500">Choose the duration of your poll (1-10 minutes)</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="flex flex-col sm:flex-row justify-end mt-6 space-y-3 sm:space-y-0 sm:space-x-3">
+                            <a href="{{ path('app_admin_index') }}" class="btn btn-ghost">
+                                Cancel
+                            </a>
+                            <button type="submit" 
+                                    class="btn btn-primary"
+                                    :disabled="!canSubmit"
+                                    :class="{'opacity-50 cursor-not-allowed': !canSubmit}">
+                                {% if app.request.attributes.get('_route') == 'app_admin_edit' %}
+                                    Update Poll
+                                {% else %}
+                                    Create Poll
+                                {% endif %}
+                            </button>
+                        </div>
+                    {{ form_end(form) }}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,31 @@
+<div class="space-y-4">
+    {% for i in 1..5 %}
+        {% set question = attribute(poll, 'question' ~ i) %}
+        {% if question %}
+            {% set voteCount = poll.getVotesForChoice(i) %}
+            <div class="mb-4">
+                <div class="flex items-center gap-2 mb-2">
+                    <span class="badge">{{ i }}</span>
+                    <span>{{ question }}</span>
+                    <span class="badge badge-primary">{{ voteCount }} votes</span>
+                </div>
+                <progress 
+                    class="progress progress-primary w-full" 
+                    value="{{ voteCount }}" 
+                    max="{{ poll.totalVotes > 0 ? poll.totalVotes : 1 }}"
+                ></progress>
+                <div class="text-xs opacity-75 text-right">
+                    {% if poll.totalVotes > 0 %}
+                        {{ ((voteCount / poll.totalVotes) * 100)|round(1) }}%
+                    {% else %}
+                        0%
+                    {% endif %}
+                </div>
+            </div>
+        {% endif %}
+    {% endfor %}
+
+    <div class="mt-4 text-sm opacity-75">
+        Total votes: {{ poll.totalVotes }}
+    </div>
+</div>
