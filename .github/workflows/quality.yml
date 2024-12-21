@@ -2,7 +2,6 @@ name: Quality Assurance
 
 on:
   push:
-    branches: [ "main" ]
   pull_request:
     branches: [ "main" ]
 
@@ -11,6 +10,15 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@master
+
+      - name: Create Database Directory
+        run: |
+          mkdir -p var
+          touch var/test.db
+          chmod -R 777 var
+
+      - name: Copy .env.test
+        run: cp .env.test .env.test.local
 
       - name: PHP CS Fixer
         uses: docker://jakzal/phpqa:php8.3
@@ -42,7 +50,26 @@ jobs:
         with:
           args: bin/console lint:container
 
+      - name: Run Migrations
+        uses: docker://jakzal/phpqa:php8.3
+        env:
+          DATABASE_URL: "sqlite:///%kernel.project_dir%/var/test.db"
+          APP_ENV: test
+        with:
+          args: bin/console doctrine:migrations:migrate --no-interaction --env=test
+
+      - name: Load Fixtures
+        uses: docker://jakzal/phpqa:php8.3
+        env:
+          DATABASE_URL: "sqlite:///%kernel.project_dir%/var/test.db"
+          APP_ENV: test
+        with:
+          args: bin/console doctrine:fixtures:load --no-interaction --env=test
+
       - name: Run Tests
         uses: docker://jakzal/phpqa:php8.3
+        env:
+          DATABASE_URL: "sqlite:///%kernel.project_dir%/var/test.db"
+          APP_ENV: test
         with:
           args: bin/phpunit --testdox
