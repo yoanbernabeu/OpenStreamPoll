@@ -2,47 +2,54 @@ name: Quality Assurance
 
 on:
   push:
-    branches: [ "main" ]
   pull_request:
-    branches: [ "main" ]
 
 jobs:
   static-code-analysis:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@master
+      - uses: actions/checkout@v3
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          extensions: pdo_sqlite
+          coverage: xdebug
+
+      - name: Copy .env.test
+        run: php -r "file_exists('.env.test.local') || copy('.env.test', '.env.test.local');"
+
+      - name: Install Dependencies
+        run: composer install -q --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
+
+      - name: Create Database
+        run: |
+          mkdir -p var/
+          touch var/test.db
 
       - name: PHP CS Fixer
-        uses: docker://jakzal/phpqa:php8.3
-        with:
-          args: php-cs-fixer fix ./src --rules=@Symfony --verbose --dry-run
+        run: vendor/bin/php-cs-fixer fix ./src --rules=@Symfony --verbose --dry-run
 
       - name: PHPStan
-        uses: docker://jakzal/phpqa:php8.3
-        with:
-          args: phpstan analyse ./src --level=8
+        run: vendor/bin/phpstan analyse ./src --level=8
 
       - name: Security Check
-        uses: docker://jakzal/phpqa:php8.3
-        with:
-          args: local-php-security-checker
+        run: vendor/bin/security-checker security:check
 
       - name: Lint Twig
-        uses: docker://jakzal/phpqa:php8.3
-        with:
-          args: bin/console lint:twig ./templates
+        run: php bin/console lint:twig ./templates
 
       - name: Lint YAML
-        uses: docker://jakzal/phpqa:php8.3
-        with:
-          args: bin/console lint:yaml ./config
+        run: php bin/console lint:yaml ./config
 
       - name: Lint Container
-        uses: docker://jakzal/phpqa:php8.3
-        with:
-          args: bin/console lint:container
+        run: php bin/console lint:container
 
-      - name: Run Tests
-        uses: docker://jakzal/phpqa:php8.3
-        with:
-          args: bin/phpunit --testdox
+      - name: Execute tests
+        env:
+          DATABASE_URL: "sqlite:///%kernel.project_dir%/var/test.db"
+          APP_ENV: test
+        run: |
+          php bin/console doctrine:schema:create --env=test
+          vendor/bin/phpunit --testdox
