@@ -50,14 +50,6 @@ jobs:
         with:
           args: bin/console lint:container
 
-      - name: Create Database Schema
-        uses: docker://jakzal/phpqa:php8.3
-        env:
-          DATABASE_URL: "sqlite:///%kernel.project_dir%/var/test.db"
-          APP_ENV: test
-        with:
-          args: bin/console doctrine:schema:create --env=test
-
       - name: Run Migrations
         uses: docker://jakzal/phpqa:php8.3
         env:
