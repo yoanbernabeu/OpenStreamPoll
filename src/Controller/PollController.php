@@ -23,10 +23,17 @@ class PollController extends AbstractController
 
     #[Route('/{shortCode}', name: 'show')]
     public function show(
-        #[MapEntity(mapping: ['shortCode' => 'shortCode'])]
-        Poll $poll,
         Request $request,
+        #[MapEntity(mapping: ['shortCode' => 'shortCode'])]
+        ?Poll $poll = null,
     ): Response {
+        // If the poll does not exist, display an error message
+        if (null === $poll) {
+            return $this->render('poll/error.html.twig', [
+                'message' => 'This poll does not exist.',
+            ]);
+        }
+
         // If the poll is expired, display an error message
         if ($this->pollService->checkIfPollIsExpired($poll)) {
             return $this->render('poll/error.html.twig', [

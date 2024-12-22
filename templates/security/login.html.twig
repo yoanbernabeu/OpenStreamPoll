@@ -38,6 +38,13 @@
 
                     <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
 
+                    <div class="form-control">
+                        <label class="label cursor-pointer">
+                            <span class="label-text">Remember me</span>
+                            <input type="checkbox" name="_remember_me" class="checkbox checkbox-primary">
+                        </label>
+                    </div>
+
                     <div class="mt-6">
                         <button class="btn btn-primary w-full" type="submit">
                             Sign in

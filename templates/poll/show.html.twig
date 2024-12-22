@@ -3,65 +3,41 @@
 {% block title %}{{ poll.title }}{% endblock %}
 
 {% block body %}
-<div class="min-h-screen bg-base-200 py-8">
-    <div class="max-w-4xl mx-auto px-4">
-        {# Hero section avec titre et description #}
-        <div class="card bg-base-100 shadow-xl mb-8">
-            <div class="card-body text-center">
-                <h1 class="text-4xl font-bold mb-4">{{ poll.title }}</h1>
-                {% if poll.description %}
-                    <p class="text-xl text-base-content/80">{{ poll.description }}</p>
-                {% endif %}
-            </div>
-        </div>
-
-        {# Timer section #}
-        <div class="card bg-base-100 shadow-xl mb-8" x-data="timer('{{ poll.endAt|date('Y-m-d\\TH:i:s\\Z') }}')">
-            <div class="card-body">
-                <div class="grid place-items-center">
-                    <div class="stats shadow">
-                        <div class="stat text-center">
-                            <div class="stat-title">Time remaining</div>
-                            <div class="stat-value text-4xl font-mono">
-                                <span x-text="minutes">00</span>:<span x-text="seconds">00</span>
-                            </div>
-                            <div class="stat-desc" x-show="isExpired">Poll ended</div>
+<div class="min-h-screen bg-base-200 py-2">
+    <div class="container mx-auto px-2">
+        {# Header Card combiné #}
+        <div class="card bg-base-100 shadow-xl mb-3">
+            <div class="card-body p-3">
+                <div class="flex flex-col sm:flex-row items-center gap-2 justify-between">
+                    <h1 class="text-lg font-bold text-center sm:text-left">{{ poll.title }}</h1>
+                    <div x-data="timer('{{ poll.endAt|date('Y-m-d\\TH:i:s\\Z') }}')" 
+                         class="flex items-center gap-2">
+                        <div class="font-mono text-xl">
+                            <span x-text="minutes">00</span>:<span x-text="seconds">00</span>
                         </div>
+                        <span class="text-xs opacity-75">remaining</span>
                     </div>
                 </div>
             </div>
         </div>
 
-        {# Questions section #}
+        {# Options Card #}
         <div class="card bg-base-100 shadow-xl">
-            <div class="card-body">
-                <h2 class="card-title text-2xl mb-6">Make your choice</h2>
-                
-                {{ form_start(form, {'attr': {'class': 'space-y-4', 'x-data': '{ selected: null }'}}) }}
-                    <div class="space-y-4 px-8">
+            <div class="card-body p-3">
+                {{ form_start(form) }}
+                    <div class="flex flex-col gap-2">
                         {% for child in form.choice %}
-                            <label for="{{ child.vars.id }}" class="flex items-center w-full cursor-pointer">
-                                {{ form_widget(child, {
-                                    'attr': {
-                                        'class': 'radio radio-primary',
-                                        '@change': 'selected = $el.value'
-                                    }
-                                }) }}
-                                <div class="btn btn-lg btn-outline w-full hover:scale-[1.02] transition-transform duration-200 justify-start h-auto py-4 ml-4"
-                                     :class="selected === '{{ child.vars.value }}' ? 'btn-primary text-primary-content' : ''">
-                                    <div class="flex items-center">
-                                        <span class="text-left px-2">{{ child.vars.label }}</span>
-                                    </div>
+                            <label class="flex items-start btn btn-outline h-auto py-4 px-6 cursor-pointer hover:scale-[1.01] transition-transform">
+                                <div class="flex items-start gap-4 w-full">
+                                    {{ form_widget(child, {'attr': {'class': 'radio radio-primary mt-1.5'}}) }}
+                                    <span class="text-lg text-left flex-1">{{ child.vars.label }}</span>
                                 </div>
                             </label>
                         {% endfor %}
                     </div>
 
-                    <div class="text-center mt-8">
-                        <button type="submit" 
-                                class="btn btn-primary btn-wide" 
-                                :disabled="!selected"
-                                :class="!selected ? 'btn-disabled' : ''">
+                    <div class="mt-4 text-center">
+                        <button type="submit" class="btn btn-primary">
                             Submit Vote
                         </button>
                     </div>
@@ -69,9 +45,9 @@
             </div>
         </div>
 
-        {# Footer info #}
-        <div class="mt-8 text-center text-base-content/60">
-            <p>Visitor ID: {{ voterId }}</p>
+        {# Visitor ID #}
+        <div class="mt-4 text-center">
+            <p class="text-xs opacity-50">Visitor ID: {{ voterId }}</p>
         </div>
     </div>
 </div>
