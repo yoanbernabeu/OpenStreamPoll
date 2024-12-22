@@ -6,6 +6,31 @@ OpenStreamPoll is an open-source live polling platform designed specifically for
 
 ---
 
+## Table of Contents
+- [OpenStreamPoll](#openstreampoll)
+  - [Table of Contents](#table-of-contents)
+  - [Key Features](#key-features)
+  - [Usage Guide](#usage-guide)
+    - [Creating and Managing Polls](#creating-and-managing-polls)
+    - [OBS Integration](#obs-integration)
+      - [Real-Time Poll Display](#real-time-poll-display)
+      - [OBS Dock Integration](#obs-dock-integration)
+  - [Installation \& Deployment](#installation--deployment)
+    - [Prerequisites](#prerequisites)
+    - [1. Production Deployment with Make (Recommended)](#1-production-deployment-with-make-recommended)
+    - [2. Manual Production Deployment](#2-manual-production-deployment)
+    - [3. Local Development Setup](#3-local-development-setup)
+    - [4. Quick Local Testing](#4-quick-local-testing)
+  - [Technologies](#technologies)
+    - [Backend](#backend)
+    - [Frontend](#frontend)
+    - [Infrastructure](#infrastructure)
+  - [Support \& Contributing](#support--contributing)
+  - [About the Project](#about-the-project)
+  - [License](#license)
+
+---
+
 ## Key Features
 
 - **Instant Live Polls**
@@ -35,33 +60,6 @@ OpenStreamPoll is an open-source live polling platform designed specifically for
   - Docker-ready configuration
   - Easy scaling capabilities
   - Simple installation process
-
-## Technologies
-
-### Backend
-- **PHP 8.3** with Symfony 7.2
-- **FrankenPHP** for high-performance PHP serving
-- **SQLite** for simple, file-based database
-
-### Frontend
-- **Alpine.js** for reactive components
-- **HTMX** for dynamic updates
-- **Tailwind CSS** for styling
-- **Fireworks-js** for celebration effects
-
-### Infrastructure
-- **Docker** with multi-stage builds
-- **Composer** for PHP dependencies
-- **Node.js** for asset building
-- **Make** for automation
-
-The stack is intentionally chosen to be simple yet effective, focusing on:
-- Minimal dependencies
-- Easy deployment
-- Real-time capabilities
-- Low resource usage
-
-All of these technologies work together to create a lightweight, performant polling system that just works.
 
 ---
 
@@ -245,6 +243,35 @@ For rapid testing with Docker:
    ```
 
 The application will be accessible at `http://localhost`
+
+---
+
+## Technologies
+
+### Backend
+- **PHP 8.3** with Symfony 7.2
+- **FrankenPHP** for high-performance PHP serving
+- **SQLite** for simple, file-based database
+
+### Frontend
+- **Alpine.js** for reactive components
+- **HTMX** for dynamic updates
+- **Tailwind CSS** for styling
+- **Fireworks-js** for celebration effects
+
+### Infrastructure
+- **Docker** with multi-stage builds
+- **Composer** for PHP dependencies
+- **Node.js** for asset building
+- **Make** for automation
+
+The stack is intentionally chosen to be simple yet effective, focusing on:
+- Minimal dependencies
+- Easy deployment
+- Real-time capabilities
+- Low resource usage
+
+All of these technologies work together to create a lightweight, performant polling system that just works.
 
 ---
 
