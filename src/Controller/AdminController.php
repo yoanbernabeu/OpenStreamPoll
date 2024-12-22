@@ -32,8 +32,14 @@ class AdminController extends AbstractController
     }
 
     #[Route('/show/{id}', name: 'show')]
-    public function show(Poll $poll): Response
+    public function show(?Poll $poll = null): Response
     {
+        if (null === $poll) {
+            $this->addFlash(FlashTypeEnum::ERROR->value, 'This poll does not exist.');
+
+            return $this->redirectToRoute('app_admin_index');
+        }
+
         return $this->render('admin/show.html.twig', [
             'poll' => $poll,
         ]);
@@ -54,8 +60,14 @@ class AdminController extends AbstractController
     }
 
     #[Route('/edit/{id}', name: 'edit')]
-    public function edit(Request $request, Poll $poll): Response
+    public function edit(Request $request, ?Poll $poll = null): Response
     {
+        if (null === $poll) {
+            $this->addFlash(FlashTypeEnum::ERROR->value, 'This poll does not exist.');
+
+            return $this->redirectToRoute('app_admin_index');
+        }
+
         if ($this->pollService->checkIfPollHasVotes($poll)) {
             $this->addFlash(FlashTypeEnum::ERROR->value, 'This poll has votes and cannot be edited.');
 

@@ -1,0 +1,42 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Page Not Found{% endblock %}
+
+{% block body %}
+<div class="min-h-screen bg-[#0a0a0a] grid place-items-center relative">
+    <!-- Background Effects -->
+    <div class="absolute inset-0 z-0">
+        <!-- Dark Gradient Base -->
+        <div class="absolute inset-0 bg-gradient-to-br from-black via-base-300 to-black opacity-90"></div>
+        
+        <!-- Animated Gradient Effects -->
+        <div class="absolute inset-0">
+            <div class="absolute top-0 left-1/4 w-[500px] h-[500px] bg-red-600/20 rounded-full blur-[100px] animate-pulse"></div>
+            <div class="absolute bottom-0 right-1/4 w-[500px] h-[500px] bg-orange-600/20 rounded-full blur-[100px] animate-pulse delay-1000"></div>
+            <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-red-600/10 rounded-full blur-[120px] animate-pulse delay-700"></div>
+        </div>
+    </div>
+
+    <div class="max-w-md w-full px-4 relative z-10">
+        <div class="relative group">
+            <div class="absolute -inset-1 bg-gradient-to-r from-error via-orange-500 to-red-500 opacity-75 blur-xl group-hover:opacity-100 transition duration-1000"></div>
+            <div class="absolute -inset-2 bg-gradient-to-r from-error via-orange-500 to-red-500 opacity-50 blur-2xl group-hover:opacity-75 transition duration-1000 animate-pulse"></div>
+            
+            <div class="card bg-base-100 shadow-xl relative">
+                <div class="card-body items-center text-center">
+                    <div class="text-error mb-4">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-24 h-24" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                        </svg>
+                    </div>
+                    
+                    <h1 class="text-3xl font-bold mb-4">Page Not Found</h1>
+                    <p class="text-base-content/70 mb-8">The page you are looking for does not exist.</p>
+                </div>
+            </div>
+            
+            <div class="absolute inset-0 rounded-lg ring-2 ring-error/20 z-20"></div>
+        </div>
+    </div>
+</div>
+{% endblock %}

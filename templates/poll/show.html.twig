@@ -27,9 +27,11 @@
                 {{ form_start(form) }}
                     <div class="flex flex-col gap-2">
                         {% for child in form.choice %}
-                            <label class="flex items-center gap-2 btn btn-outline h-auto py-4 px-6 cursor-pointer hover:scale-[1.01] transition-transform">
-                                {{ form_widget(child, {'attr': {'class': 'radio radio-primary'}}) }}
-                                <span class="text-lg">{{ child.vars.label }}</span>
+                            <label class="flex items-start btn btn-outline h-auto py-4 px-6 cursor-pointer hover:scale-[1.01] transition-transform">
+                                <div class="flex items-start gap-4 w-full">
+                                    {{ form_widget(child, {'attr': {'class': 'radio radio-primary mt-1.5'}}) }}
+                                    <span class="text-lg text-left flex-1">{{ child.vars.label }}</span>
+                                </div>
                             </label>
                         {% endfor %}
                     </div>
