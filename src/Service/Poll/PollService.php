@@ -57,6 +57,11 @@ class PollService
      */
     public function persistPoll(Poll $poll): Poll
     {
+        $activePoll = $this->getActivePoll();
+        if ($activePoll && $activePoll->getId() !== $poll->getId()) {
+            $poll->setDraft(true);
+        }
+
         $this->entityManager->persist($poll);
         $this->entityManager->flush();
 

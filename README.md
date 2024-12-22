@@ -37,6 +37,7 @@ OpenStreamPoll is an open-source live polling platform designed specifically for
   - Create polls in seconds with customizable options
   - Support for multiple choice questions (5 max)
   - Set poll duration and voting limits
+  - Save polls as drafts for later use
 
 - **Real-Time Engagement**
   - Live result updates
@@ -72,18 +73,23 @@ OpenStreamPoll is an open-source live polling platform designed specifically for
    - Click "Create New Poll"
    - Set your question and options
    - Configure poll settings (duration, limits, etc.)
+   - Save as draft or publish immediately
 
-2. **Share with Audience:**
+2. **Managing Drafts:**
+   - Save polls as drafts for future streams
+   - Edit drafts anytime before publishing
+
+3. **Share with Audience:**
    - Copy the generated poll URL
    - Share through your preferred platform
    - Or use the OBS integration for direct display
 
-3. **Monitor Activity:**
+4. **Monitor Activity:**
    - Watch real-time voting statistics
    - View participation metrics
    - Track engagement levels
 
-4. **Display Results:**
+5. **Display Results:**
    - Use the OBS overlay feature
    - Display the poll only during its open duration
    - The poll disappears and reappears automatically

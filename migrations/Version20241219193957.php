@@ -14,7 +14,7 @@ final class Version20241219193957 extends AbstractMigration
 {
     public function getDescription(): string
     {
-        return '';
+        return 'Remove is_active column from poll table';
     }
 
     public function up(Schema $schema): void

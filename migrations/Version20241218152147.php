@@ -14,7 +14,7 @@ final class Version20241218152147 extends AbstractMigration
 {
     public function getDescription(): string
     {
-        return '';
+        return 'Add poll, user, vote and messenger_messages tables';
     }
 
     public function up(Schema $schema): void

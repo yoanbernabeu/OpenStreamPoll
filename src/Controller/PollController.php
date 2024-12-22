@@ -34,6 +34,13 @@ class PollController extends AbstractController
             ]);
         }
 
+        // If poll is draft, display an error message
+        if ($poll->isDraft()) {
+            return $this->render('poll/error.html.twig', [
+                'message' => 'This poll is not available.',
+            ]);
+        }
+
         // If the poll is expired, display an error message
         if ($this->pollService->checkIfPollIsExpired($poll)) {
             return $this->render('poll/error.html.twig', [

@@ -48,13 +48,12 @@ class AdminController extends AbstractController
     #[Route('/create', name: 'create')]
     public function create(Request $request): Response
     {
-        if ($this->pollService->checkIfPollIsActive()) {
-            $this->addFlash(FlashTypeEnum::ERROR->value, 'There is already an active poll.');
-
-            return $this->redirectToRoute('app_admin_index');
-        }
-
         $poll = $this->pollService->createPoll();
+
+        if ($this->pollService->checkIfPollIsActive()) {
+            $this->addFlash(FlashTypeEnum::ERROR->value, 'Active poll exists. Status set to draft.');
+            $poll->setDraft(true);
+        }
 
         return $this->handleForm($request, $poll, 'admin/create.html.twig');
     }

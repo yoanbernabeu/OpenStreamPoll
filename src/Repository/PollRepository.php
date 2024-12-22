@@ -34,6 +34,7 @@ class PollRepository extends ServiceEntityRepository
         return $this->createQueryBuilder('p')
             ->andWhere('p.startAt <= :now')
             ->andWhere('p.endAt >= :now')
+            ->andWhere('p.isDraft = false')
             ->setParameter('now', new \DateTimeImmutable('now', new \DateTimeZone('UTC')))
             ->getQuery()
             ->getOneOrNullResult()
