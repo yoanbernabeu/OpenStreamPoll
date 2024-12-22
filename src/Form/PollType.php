@@ -5,6 +5,7 @@ namespace App\Form;
 use App\Entity\Poll;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
@@ -15,13 +16,18 @@ class PollType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('title')
-            ->add('description')
-            ->add('question1')
-            ->add('question2')
-            ->add('question3')
-            ->add('question4')
-            ->add('question5')
+            ->add('title', TextType::class)
+            ->add('question1', TextType::class)
+            ->add('question2', TextType::class)
+            ->add('question3', TextType::class, [
+                'required' => false,
+            ])
+            ->add('question4', TextType::class, [
+                'required' => false,
+            ])
+            ->add('question5', TextType::class, [
+                'required' => false,
+            ])
             ->add('startAt', null, [
                 'widget' => 'single_text',
                 'data' => new \DateTimeImmutable(),

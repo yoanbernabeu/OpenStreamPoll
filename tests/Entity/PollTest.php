@@ -23,13 +23,11 @@ class PollTest extends TestCase
     {
         $this->poll
             ->setTitle('Test Poll')
-            ->setDescription('Test Description')
             ->setShortCode('abc123')
             ->setStartAt($this->startAt)
             ->setEndAt($this->endAt);
 
         $this->assertEquals('Test Poll', $this->poll->getTitle());
-        $this->assertEquals('Test Description', $this->poll->getDescription());
         $this->assertEquals('abc123', $this->poll->getShortCode());
         $this->assertSame($this->startAt, $this->poll->getStartAt());
         $this->assertSame($this->endAt, $this->poll->getEndAt());
@@ -107,7 +105,6 @@ class PollTest extends TestCase
 
     public function testNullableFields(): void
     {
-        $this->assertNull($this->poll->getDescription());
         $this->assertNull($this->poll->getQuestion1());
         $this->assertNull($this->poll->getQuestion2());
         $this->assertNull($this->poll->getQuestion3());

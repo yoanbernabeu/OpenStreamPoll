@@ -64,7 +64,6 @@ class AppFixtures extends Fixture
         $poll = new Poll();
         $poll
             ->setTitle('Active Poll')
-            ->setDescription('This is an active poll')
             ->setShortCode('abc123')
             ->setStartAt(new \DateTimeImmutable('now'))
             ->setEndAt(new \DateTimeImmutable('+1 hour'))
@@ -80,7 +79,6 @@ class AppFixtures extends Fixture
         $poll = new Poll();
         $poll
             ->setTitle('Expired Poll')
-            ->setDescription('This is an expired poll')
             ->setShortCode('xyz789')
             ->setStartAt(new \DateTimeImmutable('-2 hours'))
             ->setEndAt(new \DateTimeImmutable('-1 hour'))
