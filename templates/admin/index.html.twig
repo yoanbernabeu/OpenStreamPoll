@@ -59,7 +59,11 @@
                             <div class="card bg-base-300 hover:bg-base-200 transition-all">
                                 <div class="card-body p-3">
                                     <div class="flex justify-between items-start gap-2">
-                                        <h2 class="card-title text-base">{{ poll.title }}</h2>
+                                        <h2 class="card-title text-base">
+                                            <a href="{{ path('app_admin_show', {'id': poll.id}) }}" class="hover:underline">
+                                                {{ poll.title }}
+                                            </a>
+                                        </h2>
                                         <div class="dropdown dropdown-end">
                                             <button tabindex="0" class="btn btn-ghost btn-sm btn-circle">
                                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -94,22 +98,29 @@
                                     </div>
 
                                     <div class="flex flex-wrap gap-1 mt-2">
-                                        {% if "now"|date('U') >= poll.startAt|date('U') and "now"|date('U') <= poll.endAt|date('U') %}
-                                            <div class="badge badge-success">Open</div>
-                                        {% else %}
-                                            <div class="badge badge-error">Closed</div>
+                                        {% if not poll.isDraft %}
+                                            {% if "now"|date('U') >= poll.startAt|date('U') and "now"|date('U') <= poll.endAt|date('U') %}
+                                                <div class="badge badge-success">Open</div>
+                                            {% else %}
+                                                <div class="badge badge-error">Closed</div>
+                                            {% endif %}
                                         {% endif %}
                                         {% if poll.totalVotes > 0 %}
                                             <div class="badge badge-primary">{{ poll.totalVotes }} votes</div>
                                         {% endif %}
+                                        {% if poll.isDraft %}
+                                            <div class="badge badge-warning">Draft</div>
+                                        {% endif %}
                                     </div>
 
-                                    <div class="flex items-center gap-1 mt-2" 
-                                         x-data="remainingTime('{{ poll.endAt|date('Y-m-d\\TH:i:s\\Z') }}')"
-                                         x-show="!isExpired">
-                                        <span class="text-sm opacity-75">Time left:</span>
-                                        <span x-text="timeText" class="badge badge-sm badge-primary"></span>
-                                    </div>
+                                    {% if not poll.isDraft %}
+                                        <div class="flex items-center gap-1 mt-2" 
+                                             x-data="remainingTime('{{ poll.endAt|date('Y-m-d\\TH:i:s\\Z') }}')"
+                                             x-show="!isExpired">
+                                            <span class="text-sm opacity-75">Time left:</span>
+                                            <span x-text="timeText" class="badge badge-sm badge-primary"></span>
+                                        </div>
+                                    {% endif %}
                                 </div>
                             </div>
                         {% endfor %}
@@ -133,20 +144,29 @@
                                         <td>{{ poll.title }}</td>
                                         <td x-data="remainingTime('{{ poll.endAt|date('Y-m-d\\TH:i:s\\Z') }}')" 
                                             class="py-4 w-32">
-                                            <span x-text="timeText" 
-                                                  x-show="!isExpired"
-                                                  class="badge badge-primary">
-                                            </span>
-                                            <span x-show="isExpired" 
-                                                  class="text-xs opacity-50">
-                                                Finished
-                                            </span>
+                                            {% if not poll.isDraft %}
+                                                <span x-text="timeText" 
+                                                      x-show="!isExpired"
+                                                      class="badge badge-primary">
+                                                </span>
+                                                <span x-show="isExpired" 
+                                                      class="text-xs opacity-50">
+                                                    Finished
+                                                </span>
+                                            {% else %}
+                                                <span class="text-xs opacity-50">-</span>
+                                            {% endif %}
                                         </td>
                                         <td>
-                                            {% if "now"|date('U') >= poll.startAt|date('U') and "now"|date('U') <= poll.endAt|date('U') %}
-                                                <div class="badge badge-success">Open</div>
-                                            {% else %}
-                                                <div class="badge badge-error">Closed</div>
+                                            {% if not poll.isDraft %}
+                                                {% if "now"|date('U') >= poll.startAt|date('U') and "now"|date('U') <= poll.endAt|date('U') %}
+                                                    <div class="badge badge-success">Open</div>
+                                                {% else %}
+                                                    <div class="badge badge-error">Closed</div>
+                                                {% endif %}
+                                            {% endif %}
+                                            {% if poll.isDraft %}
+                                                <div class="badge badge-warning">Draft</div>
                                             {% endif %}
                                         </td>
                                         <td>

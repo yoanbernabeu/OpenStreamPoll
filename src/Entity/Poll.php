@@ -49,6 +49,9 @@ class Poll
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $question5 = null;
 
+    #[ORM\Column(nullable: true)]
+    private ?bool $isDraft = null;
+
     public function __construct()
     {
         $this->votes = new ArrayCollection();
@@ -207,5 +210,17 @@ class Poll
     public function getTotalVotes(): int
     {
         return $this->votes->count();
+    }
+
+    public function isDraft(): ?bool
+    {
+        return $this->isDraft;
+    }
+
+    public function setDraft(?bool $isDraft): static
+    {
+        $this->isDraft = $isDraft;
+
+        return $this;
     }
 }

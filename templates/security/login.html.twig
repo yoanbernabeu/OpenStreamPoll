@@ -3,55 +3,77 @@
 {% block title %}Log in!{% endblock %}
 
 {% block body %}
-<div class="min-h-screen bg-base-200 grid place-items-center">
-    <div class="max-w-md w-full px-4">
-        <div class="card bg-base-100 shadow-xl">
-            <div class="card-body">
-                <h1 class="card-title text-2xl mb-6">Sign in</h1>
+<div class="min-h-screen bg-[#0a0a0a] grid place-items-center relative">
+    <!-- Background Effects -->
+    <div class="absolute inset-0 z-0">
+        <!-- Dark Gradient Base -->
+        <div class="absolute inset-0 bg-gradient-to-br from-black via-base-300 to-black opacity-90"></div>
+        
+        <!-- Animated Gradient Effects -->
+        <div class="absolute inset-0">
+            <div class="absolute top-0 left-1/4 w-[500px] h-[500px] bg-primary/20 rounded-full blur-[100px] animate-pulse"></div>
+            <div class="absolute bottom-0 right-1/4 w-[500px] h-[500px] bg-secondary/20 rounded-full blur-[100px] animate-pulse delay-1000"></div>
+            <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-accent/10 rounded-full blur-[120px] animate-pulse delay-700"></div>
+        </div>
+    </div>
 
-                <form method="post" class="space-y-4">
-                    {% if error %}
-                        <div class="alert alert-error">
-                            {{ error.messageKey|trans(error.messageData, 'security') }}
+    <div class="max-w-md w-full px-4 relative z-10">
+        <div class="relative group">
+            <!-- Multi-layer glow effect -->
+            <div class="absolute -inset-1 bg-gradient-to-r from-primary via-accent to-secondary opacity-75 blur-xl group-hover:opacity-100 transition duration-1000"></div>
+            <div class="absolute -inset-2 bg-gradient-to-r from-primary via-accent to-secondary opacity-50 blur-2xl group-hover:opacity-75 transition duration-1000 animate-pulse"></div>
+            
+            <div class="card bg-base-100 shadow-xl relative">
+                <div class="card-body">
+                    <h1 class="card-title text-2xl mb-6">Sign in</h1>
+
+                    <form method="post" class="space-y-4">
+                        {% if error %}
+                            <div class="alert alert-error">
+                                {{ error.messageKey|trans(error.messageData, 'security') }}
+                            </div>
+                        {% endif %}
+
+                        {% if app.user %}
+                            <div class="alert alert-info">
+                                You are logged in as {{ app.user.userIdentifier }}, <a href="{{ path('app_logout') }}" class="link">Logout</a>
+                            </div>
+                        {% endif %}
+
+                        <div class="form-control">
+                            <label class="label" for="username">
+                                <span class="label-text">Username</span>
+                            </label>
+                            <input type="text" value="{{ last_username }}" name="_username" id="username" class="input input-bordered" autocomplete="username" required autofocus>
                         </div>
-                    {% endif %}
 
-                    {% if app.user %}
-                        <div class="alert alert-info">
-                            You are logged in as {{ app.user.userIdentifier }}, <a href="{{ path('app_logout') }}" class="link">Logout</a>
+                        <div class="form-control">
+                            <label class="label" for="password">
+                                <span class="label-text">Password</span>
+                            </label>
+                            <input type="password" name="_password" id="password" class="input input-bordered" autocomplete="current-password" required>
                         </div>
-                    {% endif %}
 
-                    <div class="form-control">
-                        <label class="label" for="username">
-                            <span class="label-text">Username</span>
-                        </label>
-                        <input type="text" value="{{ last_username }}" name="_username" id="username" class="input input-bordered" autocomplete="username" required autofocus>
-                    </div>
+                        <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
 
-                    <div class="form-control">
-                        <label class="label" for="password">
-                            <span class="label-text">Password</span>
-                        </label>
-                        <input type="password" name="_password" id="password" class="input input-bordered" autocomplete="current-password" required>
-                    </div>
+                        <div class="form-control">
+                            <label class="label cursor-pointer">
+                                <span class="label-text">Remember me</span>
+                                <input type="checkbox" name="_remember_me" class="checkbox checkbox-primary">
+                            </label>
+                        </div>
 
-                    <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
-
-                    <div class="form-control">
-                        <label class="label cursor-pointer">
-                            <span class="label-text">Remember me</span>
-                            <input type="checkbox" name="_remember_me" class="checkbox checkbox-primary">
-                        </label>
-                    </div>
-
-                    <div class="mt-6">
-                        <button class="btn btn-primary w-full" type="submit">
-                            Sign in
-                        </button>
-                    </div>
-                </form>
+                        <div class="mt-6">
+                            <button class="btn btn-primary w-full" type="submit">
+                                Sign in
+                            </button>
+                        </div>
+                    </form>
+                </div>
             </div>
+            
+            <!-- Subtle border glow -->
+            <div class="absolute inset-0 rounded-lg ring-2 ring-primary/20 z-20"></div>
         </div>
     </div>
 </div>

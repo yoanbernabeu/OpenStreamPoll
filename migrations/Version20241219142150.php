@@ -14,7 +14,7 @@ final class Version20241219142150 extends AbstractMigration
 {
     public function getDescription(): string
     {
-        return '';
+        return 'Add choice column to vote table';
     }
 
     public function up(Schema $schema): void

@@ -56,12 +56,20 @@
 
                             {# Settings #}
                             <div class="card bg-base-300 p-3">
-                                <div class="join w-full">
-                                    {{ form_widget(form.startAt, {'attr': {'class': 'hidden'}}) }}
-                                    {{ form_widget(form.endAt, {'attr': {'class': 'hidden'}}) }}
-                                    {{ form_label(form.duration, 'Duration:', {'label_attr': {'class': 'join-item btn btn-sm w-24'}}) }}
-                                    {{ form_widget(form.duration, {'attr': {'class': 'join-item select select-sm select-bordered flex-1'}}) }}
-                                    <span class="join-item btn btn-sm w-24">minutes</span>
+                                <div class="flex items-center gap-4">
+                                    <div class="join flex-1">
+                                        {{ form_widget(form.startAt, {'attr': {'class': 'hidden'}}) }}
+                                        {{ form_widget(form.endAt, {'attr': {'class': 'hidden'}}) }}
+                                        {{ form_label(form.duration, 'Duration:', {'label_attr': {'class': 'join-item btn btn-sm w-24'}}) }}
+                                        {{ form_widget(form.duration, {'attr': {'class': 'join-item select select-sm select-bordered flex-1'}}) }}
+                                        <span class="join-item btn btn-sm w-24">minutes</span>
+                                    </div>
+                                    <div class="form-control">
+                                        <label class="label cursor-pointer gap-2">
+                                            <span class="label-text">Draft</span>
+                                            {{ form_widget(form.isDraft, {'attr': {'class': 'toggle toggle-primary toggle-sm'}}) }}
+                                        </label>
+                                    </div>
                                 </div>
                             </div>
 

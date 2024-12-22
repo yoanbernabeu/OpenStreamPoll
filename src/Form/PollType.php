@@ -47,6 +47,11 @@ class PollType extends AbstractType
                     'class' => 'duration-select',
                 ],
             ])
+            ->add('isDraft', null, [
+                'required' => false,
+                'label' => false,
+                'property_path' => 'draft',
+            ])
         ;
 
         $builder->addEventListener(FormEvents::PRE_SUBMIT, function (FormEvent $event) {

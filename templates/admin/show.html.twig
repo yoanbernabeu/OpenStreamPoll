@@ -55,20 +55,26 @@
                                 <div>
                                     <span class="text-sm opacity-75">Status</span>
                                     <div class="mt-1">
-                                        {% if "now"|date('U') >= poll.startAt|date('U') and "now"|date('U') <= poll.endAt|date('U') %}
-                                            <div class="badge badge-success badge-sm">Open</div>
+                                        {% if poll.isDraft %}
+                                            <div class="badge badge-warning badge-sm">Draft</div>
                                         {% else %}
-                                            <div class="badge badge-error badge-sm">Closed</div>
+                                            {% if "now"|date('U') >= poll.startAt|date('U') and "now"|date('U') <= poll.endAt|date('U') %}
+                                                <div class="badge badge-success badge-sm">Open</div>
+                                            {% else %}
+                                                <div class="badge badge-error badge-sm">Closed</div>
+                                            {% endif %}
                                         {% endif %}
                                     </div>
                                 </div>
-                                <div>
-                                    <span class="text-sm opacity-75">Time Left</span>
-                                    <div class="mt-1" x-data="remainingTime('{{ poll.endAt|date('Y-m-d\\TH:i:s\\Z') }}')" >
-                                        <span x-text="timeText" x-show="!isExpired" class="badge badge-primary badge-sm"></span>
-                                        <span x-show="isExpired" class="text-xs opacity-50">Finished</span>
+                                {% if not poll.isDraft %}
+                                    <div>
+                                        <span class="text-sm opacity-75">Time Left</span>
+                                        <div class="mt-1" x-data="remainingTime('{{ poll.endAt|date('Y-m-d\\TH:i:s\\Z') }}')" >
+                                            <span x-text="timeText" x-show="!isExpired" class="badge badge-primary badge-sm"></span>
+                                            <span x-show="isExpired" class="text-xs opacity-50">Finished</span>
+                                        </div>
                                     </div>
-                                </div>
+                                {% endif %}
                             </div>
                         </div>
                     </div>
