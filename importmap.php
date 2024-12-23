@@ -63,4 +63,8 @@ return [
         'path' => './assets/app_obs.js',
         'entrypoint' => true,
     ],
+    'app_qr' => [
+        'path' => './assets/app_qr.js',
+        'entrypoint' => true,
+    ],
 ];
