@@ -98,12 +98,36 @@
     </div>
 
     <!-- Features Section -->
-    <div id="features" class="relative py-12 lg:py-20 px-4 bg-gradient-to-b from-base-300 to-base-200 overflow-hidden">
+    <div id="features" class="relative py-12 lg:py-20 px-4 bg-gradient-to-b from-base-300 to-base-200">
         <div class="absolute inset-0 bg-gradient-to-br from-primary/5 to-secondary/5"></div>
         <div class="max-w-6xl mx-auto relative z-10">
-            <h2 class="text-2xl lg:text-3xl font-bold text-center mb-8 lg:mb-12">Powerful Features for Streamers</h2>
+            <h2 class="text-2xl lg:text-3xl font-bold text-center mb-12">Powerful Features for Streamers</h2>
             
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-8">
+            <!-- Vidéo Sticky -->
+            <div class="max-w-3xl mx-auto mb-24">
+                <div class="sticky top-8">
+                    <div class="relative w-full group p-4">
+                        <div class="absolute -inset-0.5 bg-gradient-to-r from-primary via-purple-500 to-secondary opacity-75 blur-lg group-hover:opacity-100 transition duration-1000 rounded-xl"></div>
+                        <div class="relative bg-base-100 rounded-xl p-2 overflow-hidden">
+                            <video 
+                                class="w-full rounded-lg shadow-2xl relative z-10 transition duration-500 group-hover:scale-[1.02]"
+                                autoplay 
+                                loop 
+                                muted 
+                                playsinline
+                            >
+                                <source src="{{ asset('video/demo.webm') }}" type="video/webm">
+                                Votre navigateur ne supporte pas la lecture de vidéos.
+                            </video>
+                            <div class="absolute inset-0 rounded-lg ring-1 ring-primary/20 z-20"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Features Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                <!-- Feature cards (les 6 features actuelles) -->
                 <!-- Feature 1: Create Polls -->
                 <div class="card bg-base-100 hover:shadow-xl transition-all">
                     <div class="card-body items-center text-center">
