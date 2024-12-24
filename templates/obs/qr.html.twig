@@ -1,0 +1,6 @@
+{% extends 'base_qr.html.twig' %}
+
+{% block body %}
+<div hx-get="{{ path('app_obs_qr_results') }}" hx-trigger="every 2s">
+</div>
+{% endblock %}

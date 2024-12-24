@@ -7,6 +7,7 @@
         "php": ">=8.2",
         "ext-ctype": "*",
         "ext-iconv": "*",
+        "chillerlan/php-qrcode": "^5.0",
         "doctrine/dbal": "^3",
         "doctrine/doctrine-bundle": "^2.13",
         "doctrine/doctrine-migrations-bundle": "^3.3",
