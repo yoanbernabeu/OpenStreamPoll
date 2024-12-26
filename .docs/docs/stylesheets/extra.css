@@ -1,0 +1,90 @@
+:root {
+    --md-primary-fg-color: #661AE6;
+    --md-primary-fg-color--light: #8B5CF6;
+    --md-primary-fg-color--dark: #4C1D95;
+    --md-accent-fg-color: #8B5CF6;
+}
+
+[data-md-color-scheme="slate"] {
+    --md-hue: 232;
+    --md-default-bg-color: #1f2937;
+    --md-default-fg-color: #f8fafc;
+    --md-default-fg-color--light: #e2e8f0;
+    --md-code-bg-color: #111827;
+    --md-code-fg-color: #e2e8f0;
+    --md-typeset-a-color: #8B5CF6;
+}
+
+.md-header {
+    background-color: #111827;
+}
+
+.md-nav__link:hover {
+    color: #8B5CF6 !important;
+}
+
+.md-typeset code {
+    background-color: #1f2937;
+    border: 1px solid #374151;
+    border-radius: 0.2rem;
+}
+
+.md-typeset pre > code {
+    background-color: #111827;
+}
+
+.md-nav__item .md-nav__link--active {
+    color: #8B5CF6;
+}
+
+.md-typeset .admonition {
+    border-left: 0.2rem solid #8B5CF6;
+    background-color: #111827;
+}
+
+/* Styles pour les onglets */
+.md-tabs {
+    background-color: #111827;
+}
+
+.tabbed-set {
+    border-radius: 0.5rem;
+    overflow: hidden;
+    margin: 1.5em 0;
+}
+
+.tabbed-set .tabbed-content {
+    padding: 1rem;
+    background-color: #1f2937;
+    border: 1px solid #374151;
+    border-top: none;
+}
+
+.tabbed-set .tabbed-labels {
+    background-color: #111827;
+    border-bottom: 1px solid #374151;
+}
+
+.tabbed-set .tabbed-labels > label {
+    color: #e2e8f0;
+    padding: 0.5rem 1rem;
+    font-weight: 600;
+}
+
+.tabbed-set .tabbed-labels > label:hover {
+    color: #8B5CF6;
+}
+
+.tabbed-set .tabbed-labels > input:checked + label {
+    color: #8B5CF6;
+    border-bottom: 2px solid #8B5CF6;
+}
+
+/* Active tab content */
+.tabbed-block {
+    display: none;
+}
+
+.tabbed-block.active {
+    display: block;
+}
