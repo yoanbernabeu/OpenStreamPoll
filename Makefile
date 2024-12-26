@@ -34,6 +34,11 @@ PHPQA_RUN = $(DOCKER_RUN) --init --rm -v $(PWD):/project -w /project $(PHPQA)
 #---PHPUNIT-#
 PHPUNIT = APP_ENV=test $(SYMFONY) php bin/phpunit
 #------------#
+
+#---MKDOCS--#
+MKDOCS = squidfunk/mkdocs-material
+MKDOCS_RUN = $(DOCKER_RUN) --rm -it -p 8000:8000 -v $(PWD)/.docs:/docs $(MKDOCS)
+#------------#
 #---------------------------------------------# s
 
 ## === 🆘  HELP ==================================================
@@ -168,6 +173,16 @@ qa-lint-container: ## Lint container.
 qa-lint-schema: ## Lint Doctrine schema.
 	$(SYMFONY_CONSOLE) doctrine:schema:validate --skip-sync -vvv --no-interaction
 .PHONY: qa-lint-schema
+#---------------------------------------------#
+
+## === 📚 DOCUMENTATION =========================================
+docs-serve: ## Serve documentation locally
+	$(MKDOCS_RUN) serve -a 0.0.0.0:8000
+.PHONY: docs-serve
+
+docs-build: ## Build documentation
+	$(MKDOCS_RUN) build
+.PHONY: docs-build
 #---------------------------------------------#
 
 ## === 🔎  TESTS =================================================
