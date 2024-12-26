@@ -1,7 +1,8 @@
 name: ci 
 on:
   push:
-
+    branches:
+      - main
 permissions:
   contents: write
 jobs:
