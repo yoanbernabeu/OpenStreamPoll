@@ -14,6 +14,7 @@ OpenStreamPoll is an open-source live polling platform designed specifically for
     - [Creating and Managing Polls](#creating-and-managing-polls)
     - [OBS Integration](#obs-integration)
       - [Real-Time Poll Display](#real-time-poll-display)
+      - [QR Code Display](#qr-code-display)
       - [OBS Dock Integration](#obs-dock-integration)
   - [Installation \& Deployment](#installation--deployment)
     - [Prerequisites](#prerequisites)
@@ -101,6 +102,13 @@ To display live polls in your stream:
 1. Add a Browser Source in your OBS scene
 2. Set the URL to: `https://yourdomain.com/obs`
 3. Adjust the size and position as needed
+
+#### QR Code Display
+To show a QR code linking to the active poll:
+1. Add another Browser Source in your OBS scene
+2. Set the URL to: `https://yourdomain.com/obs/qr`
+3. The QR code will automatically update when a new poll becomes active
+4. Viewers can scan the QR code with their mobile devices to access the current poll
 
 #### OBS Dock Integration
 Manage polls directly from OBS:
