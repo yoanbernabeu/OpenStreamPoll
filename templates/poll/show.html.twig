@@ -3,51 +3,84 @@
 {% block title %}{{ poll.title }}{% endblock %}
 
 {% block body %}
-<div class="min-h-screen bg-base-200 py-2">
-    <div class="container mx-auto px-2">
-        {# Header Card combiné #}
-        <div class="card bg-base-100 shadow-xl mb-3">
-            <div class="card-body p-3">
-                <div class="flex flex-col sm:flex-row items-center gap-2 justify-between">
-                    <h1 class="text-lg font-bold text-center sm:text-left">{{ poll.title }}</h1>
+<div class="min-h-screen bg-gradient-to-b from-base-200 to-base-300 py-4">
+    <div class="container mx-auto px-4 max-w-3xl">
+        {# Header Card #}
+        <div class="card bg-base-100 shadow-xl mb-6 border border-base-300">
+            <div class="card-body p-4">
+                <div class="flex flex-col sm:flex-row items-center gap-3 justify-between">
+                    <h1 class="text-2xl font-bold text-center sm:text-left">{{ poll.title }}</h1>
                     <div x-data="timer('{{ poll.endAt|date('Y-m-d\\TH:i:s\\Z') }}')" 
-                         class="flex items-center gap-2">
-                        <div class="font-mono text-xl">
+                         class="flex items-center gap-2 bg-base-200 px-4 py-2 rounded-full"
+                         :class="{'ring ring-error ring-opacity-50': minutes === '00' && parseInt(seconds) <= 30}">
+                        <div class="font-mono text-xl" 
+                             :class="{
+                                'animate-[pulse_1s_ease-in-out_infinite] text-error font-bold': minutes === '00' && parseInt(seconds) <= 30,
+                                'text-warning': minutes === '00' && parseInt(seconds) <= 60
+                             }">
                             <span x-text="minutes">00</span>:<span x-text="seconds">00</span>
                         </div>
-                        <span class="text-xs opacity-75">remaining</span>
+                        <span class="text-xs opacity-75" 
+                              :class="{'text-error': minutes === '00' && parseInt(seconds) <= 30}">remaining</span>
                     </div>
                 </div>
             </div>
         </div>
 
-        {# Options Card #}
-        <div class="card bg-base-100 shadow-xl">
-            <div class="card-body p-3">
-                {{ form_start(form) }}
-                    <div class="flex flex-col gap-2">
-                        {% for child in form.choice %}
-                            <label class="flex items-start btn btn-outline h-auto py-4 px-6 cursor-pointer hover:scale-[1.01] transition-transform">
-                                <div class="flex items-start gap-4 w-full">
-                                    {{ form_widget(child, {'attr': {'class': 'radio radio-primary mt-1.5'}}) }}
-                                    <span class="text-lg text-left flex-1">{{ child.vars.label }}</span>
+        {# Options Card - Single Form #}
+        {{ form_start(form) }}
+        <div class="card bg-base-100 shadow-xl border border-base-300">
+            <div class="card-body p-4">
+                <div class="flex flex-col gap-3" x-data="{ selected: null }">
+                    {% for choice in form.choice %}
+                        <label class="relative transform transition-all duration-200 ease-in-out"
+                               x-data="{ id: {{ loop.index }} }"
+                               :class="{ 'scale-[0.98] opacity-60': selected !== null && selected !== id }">
+                            {{ form_widget(choice, {
+                                'attr': {
+                                    'class': 'peer hidden',
+                                    '@click': 'selected = id'
+                                }
+                            }) }}
+                            <div class="flex items-center gap-4 p-4 rounded-lg border-2 border-base-300 
+                                      hover:border-primary cursor-pointer
+                                      peer-checked:border-primary peer-checked:bg-primary/10">
+                                <div class="w-5 h-5 rounded-full border-2 border-base-300 
+                                          peer-checked:border-primary flex items-center justify-center">
+                                    <div class="w-3 h-3 rounded-full bg-primary opacity-0 
+                                              peer-checked:opacity-100 transition-opacity"></div>
                                 </div>
-                            </label>
-                        {% endfor %}
-                    </div>
+                                <span class="text-lg">{{ choice.vars.label }}</span>
+                            </div>
+                        </label>
+                    {% endfor %}
+                </div>
 
-                    <div class="mt-4 text-center">
-                        <button type="submit" class="btn btn-primary">
-                            Submit Vote
-                        </button>
-                    </div>
-                {{ form_end(form) }}
+                <div class="mt-6 text-center">
+                    <button type="submit" 
+                            class="btn btn-primary btn-lg w-full sm:w-auto min-w-[200px]
+                                   shadow-lg shadow-primary/30 relative overflow-hidden
+                                   transition-all duration-300 ease-out
+                                   hover:shadow-primary/50 hover:scale-105
+                                   active:scale-95 active:shadow-inner
+                                   disabled:opacity-50 disabled:cursor-not-allowed
+                                   group">
+                        <span class="relative z-10">Submit Vote</span>
+                        <span class="absolute inset-0 bg-gradient-to-r from-primary/0 via-white/25 to-primary/0 
+                                   translate-x-[-100%] group-hover:translate-x-[100%] 
+                                   transition-transform duration-1000"></span>
+                    </button>
+                </div>
+                
+                {# Add CSRF token field explicitly #}
+                {{ form_rest(form) }}
             </div>
         </div>
+        {{ form_end(form, {'render_rest': false}) }}
 
         {# Visitor ID #}
         <div class="mt-4 text-center">
-            <p class="text-xs opacity-50">Visitor ID: {{ voterId }}</p>
+            <p class="text-xs opacity-50 hover:opacity-100 transition-opacity">Visitor ID: {{ voterId }}</p>
         </div>
     </div>
 </div>
